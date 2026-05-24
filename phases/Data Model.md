@@ -199,3 +199,12 @@ week_start_date
 total_meetings
 avg_meetings_per_week
 ```
+### Summary of Gold Tables
+```
+gold_daily_bookings_by_source
+gold_cost_per_booking_by_channel
+gold_bookings_trend_over_time
+gold_channel_attribution_summary
+gold_bookings_by_time_analysis
+gold_employee_meeting_load
+```
