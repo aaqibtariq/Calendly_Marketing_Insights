@@ -186,7 +186,7 @@ day_of_week
 total_bookings
 ```
 
-###gold_employee_meeting_load
+### gold_employee_meeting_load
 
 Purpose: Measure weekly employee meeting load.
 ```
