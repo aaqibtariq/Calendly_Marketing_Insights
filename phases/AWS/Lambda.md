@@ -41,8 +41,8 @@ Go to:
 Add:
 - DEST_BUCKET = calendly-marketing-datalake
 - DEST_PREFIX = bronze/spend/
-- INDEX_URL = https://dea-data-bucket.s3.us-east-1.amazonaws.com/calendly_spend_data/file_index.json
-- BASE_URL = https://dea-data-bucket.s3.us-east-1.amazonaws.com/calendly_spend_data/
+- INDEX_URL = https://***-bucket.s3.us-east-1.amazonaws.com/calendly_spend_data/file_index.json
+- BASE_URL = https://***-bucket.s3.us-east-1.amazonaws.com/calendly_spend_data/
 
 ## Increase Timeout
 Go to:
