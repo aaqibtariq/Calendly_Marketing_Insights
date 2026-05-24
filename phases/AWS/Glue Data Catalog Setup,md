@@ -1,0 +1,17 @@
+## Databases
+- calendly_bronze_db
+- calendly_silver_db
+- calendly_gold_db
+### Tables
+- bronze_calendly_webhook
+- bronze_marketing_spend
+- silver_calendly_bookings
+- silver_marketing_spend
+- silver_employees
+- silver_event_channel_map
+- gold_daily_bookings_by_source
+- gold_cost_per_booking_by_channel
+- gold_bookings_trend_over_time
+- gold_channel_attribution_summary
+- gold_bookings_by_time_analysis
+- gold_employee_meeting_load
