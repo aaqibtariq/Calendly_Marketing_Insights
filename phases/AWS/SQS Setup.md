@@ -9,26 +9,26 @@ Purpose
 
 # Create DLQ First
 
-Go to:
+- Go to:
   - AWS Console → SQS → Create queue
 - Choose:
   - Type: Standard
   - Name: calendly-webhook-dlq
-Keep defaults, then click:
+- Keep defaults, then click:
 -  Create queue
 
 # Create Main Queue
 
-Create another queue:
+- Create another queue:
   - Type: Standard
   - Name: calendly-webhook-queue
-Scroll to:
--  Dead-letter queue
-Enable:
+- Scroll to:
+  -  Dead-letter queue
+- Enable:
   -Use Redrive policy
-Select DLQ:
+- Select DLQ:
   - calendly-webhook-dlq
-Set:
+- Set:
   - Maximum receives: 3
-Click:
+- Click:
   - Create queue
