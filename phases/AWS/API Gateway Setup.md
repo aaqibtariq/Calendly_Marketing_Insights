@@ -192,3 +192,19 @@ For now, keep defaults.
   - → calendly
   - → ingestion_date=YYYY-MM-DD
 - You should see a NEW JSON file.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/aaqibtariq/Calendly_Marketing_Insights/main/phases/AWS/ref%20files/POSTMAN/POSTMAN%201.png" width="750"/>
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/aaqibtariq/Calendly_Marketing_Insights/main/phases/AWS/ref%20files/POSTMAN/POSTMAN%202.png" width="750"/>
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/aaqibtariq/Calendly_Marketing_Insights/main/phases/AWS/ref%20files/POSTMAN/POSTMAN%203.png" width="750"/>
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/aaqibtariq/Calendly_Marketing_Insights/main/phases/AWS/ref%20files/POSTMAN/POSTMAN%204.png" width="750"/>
+</p>
