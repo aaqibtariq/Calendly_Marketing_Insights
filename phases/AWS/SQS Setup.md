@@ -82,3 +82,10 @@ Purpose
 - Expected Result
   - Webhook event successfully lands in:
     - bronze/calendly/
+
+Amazon SQS – Queue Message Testing
+
+<p align="center"> <img src="https://raw.githubusercontent.com/aaqibtariq/Calendly_Marketing_Insights/main/phases/AWS/ref%20files/SQS%20test.png" width="750"/> </p>
+
+Sample Webhook Payload – JSON Event Structure
+-  [Webhook JSON Payload Sample](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/6a5f714d-a94a-4120-853a-602dc05c1f3e.json)
