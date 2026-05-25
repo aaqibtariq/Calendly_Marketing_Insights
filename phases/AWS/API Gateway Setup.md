@@ -110,6 +110,14 @@ For now, keep defaults.
 - Deploy.
 - Your final URL will look like:
     - https://xxxxxxx.execute-api.us-east-1.amazonaws.com/prod/webhook
+ 
+![API 1](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/API1%20.png)
+
+![API 2](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/api%202.png)
+
+![API 3](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/api%203.png)
+
+![API 4](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/api%204.png)
 
 ## Test with Postman
 
