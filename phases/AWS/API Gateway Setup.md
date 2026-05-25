@@ -208,3 +208,11 @@ For now, keep defaults.
 <p align="center">
   <img src="https://raw.githubusercontent.com/aaqibtariq/Calendly_Marketing_Insights/main/phases/AWS/ref%20files/POSTMAN/POSTMAN%204.png" width="750"/>
 </p>
+
+## Sample JSON Payload
+
+The following JSON file was used as the test event payload for API testing:
+
+- [Sample Calendly Event JSON](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/POSTMAN/6a5f714d-a94a-4120-853a-602dc05c1f3e.json)
+
+This payload simulates a real Calendly webhook event and was used to validate the ingestion pipeline end-to-end.
