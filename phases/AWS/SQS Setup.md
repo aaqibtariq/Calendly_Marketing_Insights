@@ -34,3 +34,51 @@ Purpose
   - Maximum receives: 3
 - Click:
   - Create queue
+ 
+
+## Test Webhook Pipeline Using SQS
+
+- Open Queue
+  - Go to:
+    - SQS
+        - → calendly-webhook-queue
+- Click:
+  - Send and receive messages
+ 
+## Send Test Calendly Webhook
+
+```
+{
+  "event": "invitee.created",
+  "payload": {
+    "uri": "https://api.calendly.com/invitees/test_invitee_001",
+    "created_at": "2026-05-24T18:30:00Z",
+    "email": "john.doe@example.com",
+    "name": "John Doe",
+    "scheduled_event": {
+      "uri": "https://api.calendly.com/scheduled_events/test_event_001"
+    },
+    "tracking": {
+      "utm_source": "facebook",
+      "utm_campaign": "summer_campaign"
+    }
+  }
+}
+
+```
+- Click:
+  - Send message
+ 
+## Verify S3 Output
+
+- Go to:
+  - calendly-marketing-datalake
+  - → bronze
+  - → calendly
+  - → ingestion_date=YYYY-MM-DD
+- You should see:
+  - <uuid>.json
+ 
+- Expected Result
+  - Webhook event successfully lands in:
+    - bronze/calendly/
