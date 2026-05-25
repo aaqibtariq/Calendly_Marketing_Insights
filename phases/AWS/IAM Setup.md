@@ -158,6 +158,7 @@ Trusted entity
       "Sid": "ReadWriteDataLake",
       "Effect": "Allow",
       "Action": [
+        "s3:GetBucketLocation",
         "s3:GetObject",
         "s3:PutObject",
         "s3:DeleteObject",
@@ -172,6 +173,7 @@ Trusted entity
       "Sid": "ReadScriptsBucket",
       "Effect": "Allow",
       "Action": [
+        "s3:GetBucketLocation",
         "s3:GetObject",
         "s3:PutObject",
         "s3:ListBucket"
@@ -185,6 +187,7 @@ Trusted entity
       "Sid": "AthenaResultsAccess",
       "Effect": "Allow",
       "Action": [
+        "s3:GetBucketLocation",
         "s3:GetObject",
         "s3:PutObject",
         "s3:ListBucket"
