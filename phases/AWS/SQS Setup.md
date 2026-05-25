@@ -22,6 +22,8 @@ Purpose
 - Create another queue:
   - Type: Standard
   - Name: calendly-webhook-queue
+- visivility
+    - 120 sec
 - Scroll to:
   -  Dead-letter queue
 - Enable:
