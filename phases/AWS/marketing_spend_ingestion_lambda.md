@@ -158,3 +158,7 @@ def lambda_handler(event, context):
  AWS Lambda – Marketing Spend Ingestion Function
  
 <p align="center"> <img src="https://raw.githubusercontent.com/aaqibtariq/Calendly_Marketing_Insights/main/phases/AWS/ref%20files/marketing_spend_ingestion_lambda.png" width="750"/> </p>
+
+Marketing Spend File – Ingestion Output Validation
+
+<p align="center"> <img src="https://raw.githubusercontent.com/aaqibtariq/Calendly_Marketing_Insights/main/phases/AWS/ref%20files/Marketing%20spend%20file%20ingested%20ingestion_date.png" width="750"/> </p>
