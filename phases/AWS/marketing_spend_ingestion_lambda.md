@@ -154,4 +154,7 @@ def lambda_handler(event, context):
     - → bronze
     - → spend
     - → ingestion_date=YYYY-MM-DD
-  
+
+ AWS Lambda – Marketing Spend Ingestion Function
+ 
+<p align="center"> <img src="https://raw.githubusercontent.com/aaqibtariq/Calendly_Marketing_Insights/main/phases/AWS/ref%20files/marketing_spend_ingestion_lambda.png" width="750"/> </p>
