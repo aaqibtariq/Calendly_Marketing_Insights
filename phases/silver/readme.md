@@ -28,6 +28,10 @@
   - → silver
     - → calendly_events_clean
    
+![EMR Result for Silver 1](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/Athena%20silver/EMR%20result%20for%20silver%201.png)
+
+![EMR Result for Silver 2](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/Athena%20silver/EMR%20result%20for%20silver.png)
+
 
 # validate from Athena
 
@@ -89,4 +93,10 @@ GROUP BY event_id
 HAVING COUNT(*) > 1;
 
 ```
+
+![Athena Silver 1](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/Athena%20silver/athena%20silver%201.png)
+
+![Athena Silver 2](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/Athena%20silver/athena%20silver%202.png)
+
+-  [Validate Channel Mapping CSV](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/Athena%20silver/Validate%20channel%20mapping.csv)
 
