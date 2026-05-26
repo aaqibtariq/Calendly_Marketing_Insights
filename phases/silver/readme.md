@@ -56,6 +56,25 @@ TBLPROPERTIES (
   'table_type' = 'DELTA'
 );
 
+CREATE EXTERNAL TABLE calendly_marketing_db.silver_marketing_spend (
+    spend_date DATE,
+    channel STRING,
+    spend DOUBLE,
+    source_file_name STRING,
+    source_system STRING
+)
+PARTITIONED BY (
+    ingestion_date DATE
+)
+STORED AS PARQUET
+LOCATION 's3://calendly-marketing-datalake/silver/marketing_spend/';
+
+MSCK REPAIR TABLE calendly_marketing_db.silver_marketing_spend;
+
+SELECT *
+FROM calendly_marketing_db.silver_marketing_spend
+LIMIT 10;
+
 ```
 
 ### Validate row count
@@ -63,6 +82,9 @@ TBLPROPERTIES (
 ```
 SELECT COUNT(*) AS total_rows
 FROM calendly_marketing_db.silver_calendly_events_clean;
+
+SELECT COUNT(*) AS total_rows
+FROM calendly_marketing_db.silver_marketing_spend;
 ```
 
 ### Preview data shape
@@ -70,6 +92,10 @@ FROM calendly_marketing_db.silver_calendly_events_clean;
 ```
 SELECT *
 FROM calendly_marketing_db.silver_calendly_events_clean
+LIMIT 10;
+
+SELECT *
+FROM calendly_marketing_db.silver_marketing_spend
 LIMIT 10;
 
 ```
@@ -82,6 +108,12 @@ SELECT
 FROM calendly_marketing_db.silver_calendly_events_clean
 GROUP BY channel
 ORDER BY booking_count DESC;
+
+SELECT
+    channel,
+    SUM(spend) AS total_spend
+FROM calendly_marketing_db.silver_marketing_spend
+GROUP BY channel;
 ```
 ### Check duplicates
 ```
@@ -91,6 +123,16 @@ SELECT
 FROM calendly_marketing_db.silver_calendly_events_clean
 GROUP BY event_id
 HAVING COUNT(*) > 1;
+
+SELECT
+    spend_date,
+    channel,
+    source_file_name,
+    COUNT(*) AS duplicate_count
+FROM calendly_marketing_db.silver_marketing_spend
+GROUP BY spend_date, channel, source_file_name
+HAVING COUNT(*) > 1;
+
 
 ```
 
