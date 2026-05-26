@@ -2,12 +2,16 @@
 
 Run Spark jobs to transform data.
 
-### Jobs
-- bronze_to_silver_calendly.py
-- bronze_to_silver_spend.py
-- silver_to_gold_metrics.py
-Reads From
-- s3://calendly-marketing-datalake/bronze/
-Writes To
-- s3://calendly-marketing-datalake/silver/
-- s3://calendly-marketing-datalake/gold/
+### Setup
+
+![EMR 1](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/EMR%201.png)
+
+![EMR 2](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/EMR%202.png)
+
+![EMR 3](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/EMR%203.png)
+
+![EMR 4](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/EMR%204.png)
+
+![EMR 5](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/EMR%205.png)
+
+![EMR 6](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/EMR%206.png)
