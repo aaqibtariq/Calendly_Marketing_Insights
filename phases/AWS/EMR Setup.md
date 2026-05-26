@@ -15,3 +15,5 @@ Run Spark jobs to transform data.
 ![EMR 5](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/EMR%205.png)
 
 ![EMR 6](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/EMR%206.png)
+
+![EMR 7](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/EMR%207.png)
