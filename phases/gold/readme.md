@@ -20,6 +20,44 @@
 
   # AThena
 
+### gold_channel_cpb
+
+```
+
+CREATE TABLE calendly_marketing_db.gold_channel_cpb
+WITH (
+    format = 'PARQUET',
+    external_location = 's3://calendly-marketing-datalake/gold/channel_cpb_final/'
+) AS
+SELECT
+    COALESCE(c.booking_date, s.spend_date) AS report_date,
+    COALESCE(c.channel, s.channel) AS channel,
+    COALESCE(c.total_bookings, 0) AS total_bookings,
+    COALESCE(c.unique_leads, 0) AS unique_leads,
+    COALESCE(c.unique_events, 0) AS unique_events,
+    ROUND(COALESCE(s.total_spend, 0), 2) AS total_spend,
+    CASE
+        WHEN COALESCE(c.total_bookings, 0) = 0 THEN NULL
+        ELSE ROUND(s.total_spend / c.total_bookings, 2)
+    END AS cpb
+FROM calendly_marketing_db.gold_campaign_performance c
+FULL OUTER JOIN (
+    SELECT
+        spend_date,
+        channel,
+        SUM(spend) AS total_spend
+    FROM calendly_marketing_db.silver_marketing_spend
+    GROUP BY spend_date, channel
+) s
+    ON c.booking_date = s.spend_date
+   AND c.channel = s.channel;
+
+
+SELECT *
+FROM calendly_marketing_db.gold_channel_cpb
+ORDER BY report_date, channel;
+
+```
 ### GOLD Campaign Performance
 
   ```
