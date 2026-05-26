@@ -14,6 +14,8 @@
   - gold/daily_booking_trends/
   - gold/employee_performance/
  
+![EMR Gold Result](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/athena%20gold/EMR%20gold%20result%20.png)
+
 
 
   # AThena
@@ -88,3 +90,6 @@ FROM calendly_marketing_db.gold_employee_performance
 LIMIT 10;
 
 ```
+![Gold Athena 1](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/athena%20gold/gold%20athena%201.png)
+
+![Gold Athena 2](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/athena%20gold/gold%20athena%202.png)
