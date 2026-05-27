@@ -9,9 +9,10 @@ st.set_page_config(
     layout="wide"
 )
 
-DATABASE = "calendly_marketing_db"
-S3_STAGING_DIR = "s3://calendly-marketing-athena-results/"
+DATABASE = "calendly_marketing_analytics"
+S3_STAGING_DIR = "s3://calendly-marketing-datalake/athena-results/"
 REGION = "us-east-1"
+
 
 @st.cache_data(ttl=300)
 def run_query(query: str) -> pd.DataFrame:
@@ -22,17 +23,18 @@ def run_query(query: str) -> pd.DataFrame:
     )
     return pd.read_sql(query, conn)
 
-campaign_df = run_query("SELECT * FROM gold_campaign_performance")
-daily_df = run_query("SELECT * FROM gold_daily_booking_trends")
-employee_df = run_query("SELECT * FROM gold_employee_performance")
-cpb_df = run_query("SELECT * FROM gold_channel_cpb")
+
+campaign_df = run_query("SELECT * FROM gold_daily_calls_by_source")
+daily_df = run_query("SELECT * FROM gold_booking_time_slot")
+employee_df = run_query("SELECT * FROM gold_employee_meeting_load")
+cpb_df = run_query("SELECT * FROM gold_cpb_by_channel")
 
 campaign_df["booking_date"] = pd.to_datetime(campaign_df["booking_date"])
 daily_df["meeting_date"] = pd.to_datetime(daily_df["meeting_date"])
 cpb_df["report_date"] = pd.to_datetime(cpb_df["report_date"])
 
 st.title("📊 Calendly Marketing Insights Dashboard")
-st.caption("Marketing bookings, campaign performance, CPB, booking trends, and employee meeting load")
+st.caption("Marketing bookings, CPB, booking trends, and employee meeting load")
 
 all_channels = sorted(cpb_df["channel"].dropna().unique())
 
@@ -44,8 +46,8 @@ selected_channels = st.sidebar.multiselect(
     default=all_channels
 )
 
-min_date = cpb_df["report_date"].min()
-max_date = cpb_df["report_date"].max()
+min_date = cpb_df["report_date"].min().date()
+max_date = cpb_df["report_date"].max().date()
 
 selected_date_range = st.sidebar.date_input(
     "Select Date Range",
@@ -98,7 +100,7 @@ col5.metric("Top Channel", top_channel)
 st.divider()
 
 tab1, tab2, tab3, tab4 = st.tabs([
-    "📈 Campaign Performance",
+    "📈 Daily Calls",
     "💰 Cost Per Booking",
     "📅 Booking Trends",
     "👥 Employee Load"
@@ -115,9 +117,9 @@ with tab1:
     )
 
     if campaign_summary.empty:
-        st.warning("No campaign data available for selected filters.")
+        st.warning("No campaign data available.")
     else:
-        fig_daily_source = px.line(
+        fig = px.line(
             campaign_summary,
             x="booking_date",
             y="total_bookings",
@@ -125,31 +127,9 @@ with tab1:
             markers=True,
             title="Daily Calls Booked by Source"
         )
-        st.plotly_chart(fig_daily_source, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True)
 
-        channel_summary = (
-            campaign_df
-            .groupby("channel", as_index=False)
-            .agg(
-                total_bookings=("total_bookings", "sum"),
-                unique_leads=("unique_leads", "sum"),
-                unique_events=("unique_events", "sum")
-            )
-            .sort_values("total_bookings", ascending=False)
-        )
-
-        fig_channel = px.bar(
-            channel_summary,
-            x="channel",
-            y="total_bookings",
-            color="channel",
-            text="total_bookings",
-            title="Total Bookings by Channel"
-        )
-        fig_channel.update_traces(textposition="outside")
-        st.plotly_chart(fig_channel, use_container_width=True)
-
-        st.dataframe(channel_summary, use_container_width=True)
+        st.dataframe(campaign_summary, use_container_width=True)
 
 with tab2:
     st.header("Cost Per Booking by Channel")
@@ -165,7 +145,7 @@ with tab2:
     )
 
     if cpb_summary.empty:
-        st.warning("No CPB data available for selected filters.")
+        st.warning("No CPB data available.")
     else:
         cpb_summary["cpb"] = cpb_summary.apply(
             lambda row: round(row["total_spend"] / row["total_bookings"], 2)
@@ -173,7 +153,7 @@ with tab2:
             axis=1
         )
 
-        fig_cpb = px.bar(
+        fig = px.bar(
             cpb_summary,
             x="channel",
             y="cpb",
@@ -181,29 +161,23 @@ with tab2:
             text="cpb",
             title="Cost Per Booking by Channel"
         )
-        fig_cpb.update_traces(textposition="outside")
-        st.plotly_chart(fig_cpb, use_container_width=True)
+        fig.update_traces(textposition="outside")
+        st.plotly_chart(fig, use_container_width=True)
 
-        fig_spend = px.bar(
-            cpb_summary,
-            x="channel",
-            y="total_spend",
-            color="channel",
-            text="total_spend",
-            title="Total Spend by Channel"
+        leaderboard = cpb_summary.sort_values(
+            ["cpb", "total_bookings"],
+            ascending=[True, False],
+            na_position="last"
         )
-        fig_spend.update_traces(textposition="outside")
-        st.plotly_chart(fig_spend, use_container_width=True)
 
-        leaderboard = cpb_summary.sort_values(["cpb", "total_bookings"], ascending=[True, False])
         st.subheader("Channel Attribution Leaderboard")
         st.dataframe(leaderboard, use_container_width=True)
 
 with tab3:
-    st.header("Bookings Trend Over Time")
+    st.header("Booking Volume by Time Slot / Day of Week")
 
     if daily_df.empty:
-        st.warning("No booking trend data available for selected filters.")
+        st.warning("No booking trend data available.")
     else:
         trend_df = (
             daily_df
@@ -251,17 +225,15 @@ with tab3:
             x="meeting_hour",
             y="meeting_day_of_week",
             z="total_bookings",
-            title="Booking Volume Heatmap: Hour vs Day of Week"
+            title="Booking Heatmap: Hour vs Day of Week"
         )
         st.plotly_chart(fig_heatmap, use_container_width=True)
-
-        st.dataframe(daily_df, use_container_width=True)
 
 with tab4:
     st.header("Meeting Load per Employee")
 
     if employee_df.empty:
-        st.warning("No employee data available for selected filters.")
+        st.warning("No employee data available.")
     else:
         employee_summary = (
             employee_df
@@ -273,36 +245,34 @@ with tab4:
             .sort_values("total_meetings", ascending=False)
         )
 
-        employee_summary["avg_meetings_per_week"] = employee_summary["total_meetings"]
-
         emp_col1, emp_col2, emp_col3 = st.columns(3)
         emp_col1.metric("Total Meetings", int(employee_summary["total_meetings"].sum()))
         emp_col2.metric("Max Meetings", int(employee_summary["total_meetings"].max()))
         emp_col3.metric("Min Meetings", int(employee_summary["total_meetings"].min()))
 
-        fig_employee = px.bar(
+        fig = px.bar(
             employee_summary,
             x="employee_name",
-            y="avg_meetings_per_week",
-            text="avg_meetings_per_week",
-            title="Average Meetings per Week by Employee"
+            y="total_meetings",
+            text="total_meetings",
+            title="Meetings by Employee"
         )
-        fig_employee.update_traces(textposition="outside")
-        st.plotly_chart(fig_employee, use_container_width=True)
+        fig.update_traces(textposition="outside")
+        st.plotly_chart(fig, use_container_width=True)
 
         st.dataframe(employee_summary, use_container_width=True)
 
 st.divider()
 
 with st.expander("Raw Gold Tables"):
-    st.subheader("Gold Channel CPB")
+    st.subheader("Gold CPB by Channel")
     st.dataframe(cpb_df, use_container_width=True)
 
-    st.subheader("Gold Campaign Performance")
+    st.subheader("Gold Daily Calls by Source")
     st.dataframe(campaign_df, use_container_width=True)
 
-    st.subheader("Gold Daily Booking Trends")
+    st.subheader("Gold Booking Time Slot")
     st.dataframe(daily_df, use_container_width=True)
 
-    st.subheader("Gold Employee Performance")
+    st.subheader("Gold Employee Meeting Load")
     st.dataframe(employee_df, use_container_width=True)
