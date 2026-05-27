@@ -79,21 +79,23 @@ campaign_df = campaign_df[campaign_df["channel"].isin(selected_channels)]
 daily_df = daily_df[daily_df["channel"].isin(selected_channels)]
 employee_df = employee_df[employee_df["channel"].isin(selected_channels)]
 
-total_bookings = int(cpb_df["total_bookings"].sum()) if not cpb_df.empty else 0
-unique_leads = int(cpb_df["unique_leads"].sum()) if not cpb_df.empty else 0
-total_spend = round(float(cpb_df["total_spend"].sum()), 2) if not cpb_df.empty else 0
+matched_cpb_df = cpb_df[cpb_df["total_bookings"] > 0]
+
+total_bookings = int(matched_cpb_df["total_bookings"].sum()) if not matched_cpb_df.empty else 0
+unique_leads = int(matched_cpb_df["unique_leads"].sum()) if not matched_cpb_df.empty else 0
+total_spend = round(float(matched_cpb_df["total_spend"].sum()), 2) if not matched_cpb_df.empty else 0
 avg_cpb = round(total_spend / total_bookings, 2) if total_bookings > 0 else 0
 
 top_channel = (
-    cpb_df.groupby("channel")["total_bookings"].sum().idxmax()
-    if not cpb_df.empty and cpb_df["total_bookings"].sum() > 0
+    matched_cpb_df.groupby("channel")["total_bookings"].sum().idxmax()
+    if not matched_cpb_df.empty and matched_cpb_df["total_bookings"].sum() > 0
     else "N/A"
 )
 
 col1, col2, col3, col4, col5 = st.columns(5)
 col1.metric("Total Bookings", total_bookings)
 col2.metric("Unique Leads", unique_leads)
-col3.metric("Total Spend", f"${total_spend:,.2f}")
+col3.metric("Matched Spend", f"${total_spend:,.2f}")
 col4.metric("Avg CPB", f"${avg_cpb:,.2f}")
 col5.metric("Top Channel", top_channel)
 
@@ -128,14 +130,13 @@ with tab1:
             title="Daily Calls Booked by Source"
         )
         st.plotly_chart(fig, use_container_width=True)
-
         st.dataframe(campaign_summary, use_container_width=True)
 
 with tab2:
     st.header("Cost Per Booking by Channel")
 
     cpb_summary = (
-        cpb_df
+        matched_cpb_df
         .groupby("channel", as_index=False)
         .agg(
             total_bookings=("total_bookings", "sum"),
@@ -147,10 +148,9 @@ with tab2:
     if cpb_summary.empty:
         st.warning("No CPB data available.")
     else:
-        cpb_summary["cpb"] = cpb_summary.apply(
-            lambda row: round(row["total_spend"] / row["total_bookings"], 2)
-            if row["total_bookings"] > 0 else None,
-            axis=1
+        cpb_summary["cpb"] = round(
+            cpb_summary["total_spend"] / cpb_summary["total_bookings"],
+            2
         )
 
         fig = px.bar(
@@ -166,8 +166,7 @@ with tab2:
 
         leaderboard = cpb_summary.sort_values(
             ["cpb", "total_bookings"],
-            ascending=[True, False],
-            na_position="last"
+            ascending=[True, False]
         )
 
         st.subheader("Channel Attribution Leaderboard")
