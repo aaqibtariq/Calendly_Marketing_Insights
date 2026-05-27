@@ -86,7 +86,7 @@ silver_df = (
         col("raw_payload.payload.tracking.utm_source").alias("utm_source"),
         col("raw_payload.payload.tracking.utm_campaign").alias("utm_campaign"),
         col("ingestion_timestamp"),
-        col("ingestion_date")
+        to_date(col("ingestion_date")).alias("ingestion_date")
     )
 )
 
@@ -103,9 +103,9 @@ silver_df = (
     .withColumn("meeting_date", to_date(col("meeting_start_time")))
     .withColumn("meeting_hour", hour(col("meeting_start_time")))
     .withColumn("meeting_day_of_week", dayofweek(col("meeting_start_time")))
+    .filter(col("channel") != "unknown")
+    .dropDuplicates(["event_id"])
 )
-
-silver_df = silver_df.filter(col("channel") != "unknown")
 
 silver_df.write.format("delta").mode("overwrite").save(silver_path)
 
