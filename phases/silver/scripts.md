@@ -2,6 +2,7 @@
 
 ```
 import sys
+
 from pyspark.context import SparkContext
 from pyspark.sql.functions import col, lower, to_date, trim
 from awsglue.context import GlueContext
@@ -18,7 +19,7 @@ job = Job(glueContext)
 job.init(args["JOB_NAME"], args)
 
 bronze_path = "s3://calendly-marketing-datalake/bronze/spend/"
-silver_output_path = "s3://calendly-marketing-datalake/silver/marketing_spend/"
+silver_output_path = "s3://calendly-marketing-datalake/silver/marketing_spend_clean/"
 
 df = spark.read.option("multiline", "true").json(bronze_path)
 
@@ -39,14 +40,15 @@ silver_df = (
     .dropDuplicates(["spend_date", "channel", "source_file_name"])
 )
 
-silver_df.write.mode("overwrite").partitionBy("ingestion_date").parquet(silver_output_path)
+silver_df.write.format("delta") \
+    .mode("overwrite") \
+    .partitionBy("ingestion_date") \
+    .save(silver_output_path)
 
-print("Silver marketing spend created successfully")
+print("Silver marketing spend Delta table created successfully")
 print(f"Output path: {silver_output_path}")
 
 job.commit()
-
-
 ```
 
 
