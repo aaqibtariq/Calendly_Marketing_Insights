@@ -18,17 +18,17 @@ from pyspark.sql.functions import (
 spark = SparkSession.builder.appName("glue_gold_analytics_transform").getOrCreate()
 
 silver_calendly_path = "s3://calendly-marketing-datalake/silver/calendly_events_clean/"
-silver_spend_path = "s3://calendly-marketing-datalake/silver/marketing_spend/"
+silver_spend_path = "s3://calendly-marketing-datalake/silver/marketing_spend_clean/"
 
-gold_campaign_path = "s3://calendly-marketing-datalake/gold/campaign_performance/"
-gold_daily_path = "s3://calendly-marketing-datalake/gold/daily_booking_trends/"
-gold_employee_path = "s3://calendly-marketing-datalake/gold/employee_performance/"
-gold_cpb_path = "s3://calendly-marketing-datalake/gold/channel_cpb/"
+gold_daily_calls_path = "s3://calendly-marketing-datalake/gold/daily_calls_by_source/"
+gold_time_slot_path = "s3://calendly-marketing-datalake/gold/booking_time_slot/"
+gold_employee_path = "s3://calendly-marketing-datalake/gold/employee_meeting_load/"
+gold_cpb_path = "s3://calendly-marketing-datalake/gold/cpb_by_channel/"
 
 silver_df = spark.read.format("delta").load(silver_calendly_path)
-spend_df = spark.read.parquet(silver_spend_path)
+spend_df = spark.read.format("delta").load(silver_spend_path)
 
-gold_campaign_df = (
+gold_daily_calls_df = (
     silver_df
     .groupBy("booking_date", "channel")
     .agg(
@@ -40,7 +40,7 @@ gold_campaign_df = (
     )
 )
 
-gold_daily_df = (
+gold_time_slot_df = (
     silver_df
     .groupBy("meeting_date", "meeting_day_of_week", "meeting_hour", "channel")
     .agg(
@@ -51,7 +51,7 @@ gold_daily_df = (
 
 gold_employee_df = (
     silver_df
-    .groupBy("employee_name", "employee_email", "channel")
+    .groupBy("employee_id", "employee_name", "employee_email", "channel")
     .agg(
         count("*").alias("total_meetings"),
         countDistinct("invitee_email").alias("unique_leads"),
@@ -69,7 +69,7 @@ spend_agg_df = (
 )
 
 gold_cpb_df = (
-    gold_campaign_df.alias("c")
+    gold_daily_calls_df.alias("c")
     .join(
         spend_agg_df.alias("s"),
         (col("c.booking_date") == col("s.spend_date")) &
@@ -92,14 +92,14 @@ gold_cpb_df = (
     )
 )
 
-gold_campaign_df.write.format("delta").mode("overwrite").save(gold_campaign_path)
-gold_daily_df.write.format("delta").mode("overwrite").save(gold_daily_path)
+gold_daily_calls_df.write.format("delta").mode("overwrite").save(gold_daily_calls_path)
+gold_time_slot_df.write.format("delta").mode("overwrite").save(gold_time_slot_path)
 gold_employee_df.write.format("delta").mode("overwrite").save(gold_employee_path)
 gold_cpb_df.write.format("delta").mode("overwrite").save(gold_cpb_path)
 
 print("Gold analytics transformation completed successfully")
-print(f"Campaign Performance: {gold_campaign_path}")
-print(f"Daily Booking Trends: {gold_daily_path}")
-print(f"Employee Performance: {gold_employee_path}")
-print(f"Channel CPB: {gold_cpb_path}")
+print(f"Daily Calls by Source: {gold_daily_calls_path}")
+print(f"Booking Time Slot: {gold_time_slot_path}")
+print(f"Employee Meeting Load: {gold_employee_path}")
+print(f"CPB by Channel: {gold_cpb_path}")
 ```
