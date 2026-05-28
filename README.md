@@ -71,6 +71,20 @@ Marketing spend uses a pull-based scheduled ingestion pattern.
 This is used because spend data arrives once per day at 6:00 AM EST.
 The Lambda function reads file_index.json, identifies the available spend file, downloads the correct spend_data_YYYY-MM-DD.json, and stores it in the Bronze layer.
 
+##  End-to-End System Design – Calendly Marketing Insights
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/aaqibtariq/Calendly_Marketing_Insights/main/phases/SD%20Calendly%20Marketing.png" width="850"/>
+</p>
+
+---
+
+##  Data Modeling & Layered Architecture
+
+- 📊 [View Data Model Documentation](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/Data%20Model.md)
+
+---
+
 ## Architecture Components
 
 1. Calendly Webhook
@@ -87,20 +101,6 @@ The Lambda function reads file_index.json, identifies the available spend file, 
 12. CloudWatch + SNS
 13. IAM + KMS
 14. GitHub CI/CD
-
-# Technologies Used
-
-## AWS Services
-- Amazon S3
-- Amazon API Gateway
-- AWS Lambda
-- Amazon EMR
-- Amazon Athena
-- AWS IAM
-- Amazon CloudWatch
-- Amazon SNS
-- Amazon SQS
-- Amazon EventBridge
 
 ---
 
