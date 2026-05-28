@@ -94,6 +94,11 @@ python3 --version
 pip3 --version
 
 pip3 install streamlit pandas plotly boto3 pyathena
+sudo dnf install git -y
+
+git clone https://github.com/aaqibtariq/Calendly_Marketing_Insights.git
+cd Calendly_Marketing_Insights/phases/streamlit
+streamlit run app.py --server.port 8501 --server.address 0.0.0.0
 
 ```
 
