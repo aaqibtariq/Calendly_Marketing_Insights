@@ -335,4 +335,8 @@ s3://calendly-marketing-datalake/athena-results/
 - Streamlit connected to Athena successfully
 - Dashboard displayed KPIs and visualizations successfully
 
+![Athena 1](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/athena%201.png)
+
+![Athena 2](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/athena%202.png)
+
 ![Athena Results](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/athena-results.png)
