@@ -319,7 +319,6 @@ Reference:
 
 Reference:
 - [Athena Setup](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/Athena%20Setup.md)
-- [Athena Queries Folder](https://github.com/aaqibtariq/Calendly_Marketing_Insights/tree/main/phases/athena)
 
 ---
 
