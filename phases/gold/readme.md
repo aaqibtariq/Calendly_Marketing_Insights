@@ -10,11 +10,12 @@
 - Action on failure: Continue
 
 - Expected S3 output:
-  - gold/campaign_performance/
-  - gold/daily_booking_trends/
-  - gold/employee_performance/
+  - gold/booking_time_slot/
+  - gold/cpb_by_channel/
+  - gold/employee_meeting_load/
  
-![EMR Gold Result](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/athena%20gold/EMR%20gold%20result%20.png)
+![Gold Layer S3](https://github.com/aaqibtariq/Calendly_Marketing_Insights/blob/main/phases/AWS/ref%20files/Gold%20layer%20s3.png)
+
 
 
 
