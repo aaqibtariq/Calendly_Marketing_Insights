@@ -11,6 +11,7 @@
 
 - Expected S3 output:
   - gold/booking_time_slot/
+  - gold/daily_calls_by_source/
   - gold/cpb_by_channel/
   - gold/employee_meeting_load/
  
